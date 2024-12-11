@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// page 27, Pattern 1:
-// Mapping Grammars to Recursive-Descent Recognizers
+// page 31, Pattern 2:
+// LL(1) Recursive-Descent Lexer
 
 // Implementation
 //

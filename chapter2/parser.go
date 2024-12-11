@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// page 27, Pattern 3:
+// page 36, Pattern 3:
 // LL(1) Recursive-Descent Parser
 
 // Grammar to be parsed (ANTLR syntax):
