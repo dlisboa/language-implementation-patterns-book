@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -48,6 +49,8 @@ func (p *Parser) elements() {
 	}
 }
 
+var SyntaxError = errors.New("syntax error")
+
 func (p *Parser) element() {
 	switch p.lookahead.Type {
 	case Name:
@@ -55,7 +58,7 @@ func (p *Parser) element() {
 	case LBrack: // we've found a sublist
 		p.list()
 	default:
-		p.err = fmt.Errorf("expecting name or list, found: %+v", p.lookahead)
+		p.err = fmt.Errorf("%w: expecting name or list, found %+v", SyntaxError, p.lookahead)
 	}
 }
 
@@ -66,10 +69,17 @@ func (p *Parser) match(typ TokenType) {
 		// go to next token
 		p.consume()
 	} else {
-		p.err = fmt.Errorf("expecting %v, got %v", typ, p.lookahead.Type)
+		p.err = fmt.Errorf("%w: expecting %v, got %v", SyntaxError, typ, p.lookahead.Type)
 	}
 }
 
 func (p *Parser) consume() {
-	p.lookahead, p.err = p.input.Next()
+	tok, err := p.input.Next()
+	// if at the end of token input stream, stop consuming. Cannot assign to
+	// err otherwise we overwrite the last error
+	if tok.Type == EOF {
+		return
+	}
+
+	p.lookahead, p.err = tok, err
 }
