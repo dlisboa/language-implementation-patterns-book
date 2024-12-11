@@ -49,18 +49,37 @@ import (
 // [a,[b,c],d]
 
 type Token struct {
-	Type int
+	Type TokenType
 	Text string
 }
 
+type TokenType int
+
 // Token types
 const (
-	EOF int = iota
+	EOF TokenType = iota
 	LBrack
 	RBrack
 	Name
 	Comma
 )
+
+func (t TokenType) String() string {
+	switch t {
+	case EOF:
+		return "EOF"
+	case LBrack:
+		return "LBrack"
+	case RBrack:
+		return "RBrack"
+	case Name:
+		return "Name"
+	case Comma:
+		return "Comma"
+	default:
+		return "Unknown"
+	}
+}
 
 // Lexer goes through the input rune by rune and produces Tokens. Lexers are
 // also called "scanners" or "tokenizers".
