@@ -62,6 +62,7 @@ const (
 	RBrack
 	Name
 	Comma
+	Equals
 )
 
 func (t TokenType) String() string {
@@ -76,6 +77,8 @@ func (t TokenType) String() string {
 		return "Name"
 	case Comma:
 		return "Comma"
+	case Equals:
+		return "Equals"
 	default:
 		return "Unknown"
 	}
@@ -124,6 +127,9 @@ func (l *Lexer) Next() (Token, error) {
 		case ']':
 			l.consume()
 			return Token{Type: RBrack, Text: "]"}, nil
+		case '=':
+			l.consume()
+			return Token{Type: Equals, Text: "="}, nil
 		default:
 			if isLetter(l.cur) {
 				return l.name()
