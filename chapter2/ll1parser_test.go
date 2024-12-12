@@ -21,7 +21,7 @@ func TestParseList(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			l := NewLexer(tc.input)
-			p := NewParser(l)
+			p := NewLL1Parser(l)
 			p.list()
 			if !errors.Is(p.err, tc.err) {
 				t.Errorf("expected %v, got: %v", tc.err, p.err)

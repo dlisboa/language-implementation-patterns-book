@@ -21,27 +21,27 @@ import (
 // variable instead of a buffer. To report parse errors we could panic, but here
 // we'll just use a variable to track it, though this isn't the optimal solution
 // (it only reports the last error and does not stop the parser).
-type Parser struct {
+type LL1Parser struct {
 	input     *Lexer
 	lookahead Token
 	err       error
 }
 
-func NewParser(l *Lexer) *Parser {
-	p := &Parser{input: l}
+func NewLL1Parser(l *Lexer) *LL1Parser {
+	p := &LL1Parser{input: l}
 	// initialize the parser with the first token, otherwise it'll be the
 	// zero-value for Token which is EOF
 	p.lookahead, p.err = p.input.Next()
 	return p
 }
 
-func (p *Parser) list() {
+func (p *LL1Parser) list() {
 	p.match(LBrack)
 	p.elements()
 	p.match(RBrack)
 }
 
-func (p *Parser) elements() {
+func (p *LL1Parser) elements() {
 	p.element()
 	for p.lookahead.Type == Comma {
 		p.match(Comma)
@@ -51,7 +51,7 @@ func (p *Parser) elements() {
 
 var SyntaxError = errors.New("syntax error")
 
-func (p *Parser) element() {
+func (p *LL1Parser) element() {
 	switch p.lookahead.Type {
 	case Name:
 		p.match(Name)
@@ -64,7 +64,7 @@ func (p *Parser) element() {
 
 // match checks if the current lookahead token if of the type we're looking for.
 // Goes to the next token if it is or reports an error if it isn't.
-func (p *Parser) match(typ TokenType) {
+func (p *LL1Parser) match(typ TokenType) {
 	if p.lookahead.Type == typ {
 		// go to next token
 		p.consume()
@@ -73,7 +73,7 @@ func (p *Parser) match(typ TokenType) {
 	}
 }
 
-func (p *Parser) consume() {
+func (p *LL1Parser) consume() {
 	tok, err := p.input.Next()
 	// if at the end of token input stream, stop consuming. Cannot assign to
 	// err otherwise we overwrite the last error
