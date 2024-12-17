@@ -1,0 +1,24 @@
+-- bad lists --
+[
+[]
+[,]
+[a,b,]
+[a,
+]]
+[]]
+[[[]
+-- bad embedded lists --
+[[[]],]
+[[[]
+[[[[[a,]]]]]
+-- bad embedded assignment --
+[a,b=[c,d],e]
+[a,b=,d]
+[a,b =, c,[d, e]]
+[a,b=[c,],e]
+[a,  [[[b = c]],d]
+-- bad parallel assignment --
+[a,b]=
+[a]=[
+[a,b]=[c,]
+

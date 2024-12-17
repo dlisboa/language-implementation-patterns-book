@@ -1,0 +1,15 @@
+-- lists --
+[a]
+[a,b,c]
+[a, b, c]
+[   a, 		b,c]
+-- embedded lists --
+[a,[b,c]]
+[a,[b,c],d]
+[a,	[b	,  c ],d]
+[[[[[a,b]]]]]
+-- embedded assignment --
+[a,b=c,d]
+[a,b = c,[d, e]]
+[a,b=c,d=e,f]
+[a,  [[[b = c]]],d]
