@@ -2,8 +2,6 @@ package main
 
 import (
 	"bytes"
-	"io"
-	"log"
 	"testing"
 
 	"golang.org/x/tools/txtar"
@@ -14,7 +12,6 @@ func TestParserGoodInput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	log.SetOutput(io.Discard)
 
 	for _, file := range ar.Files {
 		lines := bytes.Split(file.Data, []byte("\n"))
@@ -29,7 +26,7 @@ func TestParserGoodInput(t *testing.T) {
 				t.Logf("parse string: %q\n", testcase)
 
 				lexer := NewLexer(testcase)
-				parser := NewBacktrackingParser(lexer, 2)
+				parser := NewBacktrackingParser(lexer)
 				defer func() {
 					err := recover()
 					if err != nil {
@@ -61,7 +58,7 @@ func TestParserBadInput(t *testing.T) {
 				t.Logf("parse string: %q\n", testcase)
 
 				lexer := NewLexer(testcase)
-				parser := NewBacktrackingParser(lexer, 2)
+				parser := NewBacktrackingParser(lexer)
 				defer func() {
 					err := recover()
 					if err == nil {
